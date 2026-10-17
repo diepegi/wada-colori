@@ -1,5 +1,5 @@
 // Wada Colori: tiene l'app sul telefono per usarla senza internet
-const CACHE = 'wada-0fb9b662e7';
+const CACHE = 'wada-dfea40d495';
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

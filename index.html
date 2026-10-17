@@ -503,6 +503,55 @@ kbd{display:inline-block;min-width:26px;text-align:center;font:500 12px/1 var(--
 .m-title .tag{white-space:normal;line-height:1.25}
 .m-scroll,.m-body,.m-side,.m-colors{min-width:0}
 
+/* ================= fotocamera ================= */
+.camb{min-height:40px;padding:9px 14px}
+.camb .ic{width:18px;height:18px}
+[data-camopen]{justify-self:start}
+.cam{position:fixed;inset:0;z-index:45;display:flex;flex-direction:column;background:#000;color:#fff}
+.cam-view{position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none;cursor:crosshair;background:#000}
+.cam-view video,.cam-view canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cam-view canvas{object-fit:contain}
+.cam-ret{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.5),inset 0 0 0 2px rgba(0,0,0,.5);pointer-events:none;transition:left .18s var(--ease),top .18s var(--ease)}
+.cam-ret i{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--c,transparent);box-shadow:0 0 0 2px #fff}
+.cam-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 26px;background:linear-gradient(rgba(0,0,0,.6),transparent)}
+.cam-top .ibtn{color:#fff;background:rgba(0,0,0,.4)}
+.cam-top .ibtn[aria-pressed="true"]{background:#fff;color:#000}
+.cam-hint{flex:1;margin:0;font:600 13px/1.3 var(--f-body);text-align:center;text-shadow:0 1px 3px #000}
+.cam-msg{position:absolute;inset:auto 16px 50%;transform:translateY(50%);background:rgba(0,0,0,.72);border-radius:16px;padding:16px;font:500 14px/1.45 var(--f-body);text-align:center}
+.cam-panel{background:var(--surface);color:var(--ink);border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:58vh;overflow:auto;display:grid;gap:14px;align-content:start;overscroll-behavior:contain}
+.cam-read{display:flex;align-items:center;gap:14px}
+.cam-rawbox{display:grid;justify-items:center;gap:4px;flex:none}
+.cam-raw{width:44px;height:44px;border-radius:50%;background:var(--c,var(--chip));box-shadow:inset 0 0 0 1px var(--sw-line)}
+.cam-rawl{font:500 10.5px/1 var(--f-mono);color:var(--ink-2)}
+.cam-match{display:flex;align-items:center;gap:12px;min-width:0;flex:1;padding-left:14px;border-left:1px solid var(--line)}
+.cam-sw{width:66px;height:66px;border-radius:16px;background:var(--c,var(--chip));box-shadow:inset 0 0 0 1px var(--sw-line);flex:none}
+.cam-mt{min-width:0}
+.cam-mt h3{font:800 clamp(19px,5vw,24px)/1.05 var(--f-display);font-stretch:125%;margin:3px 0 4px;letter-spacing:-.01em}
+.cam-mt p{margin:0;font-size:12.5px;color:var(--ink-2)}
+.cam-alt{display:flex;gap:8px;flex-wrap:wrap}
+.cam-alt:empty{display:none}
+.cam-act{display:flex;gap:8px;flex-wrap:wrap}
+.cam-act .btn[aria-pressed="true"]{background:var(--chip-on);color:var(--on-chip-on);border-color:var(--chip-on)}
+.cam-tip{margin:0;font-size:12.5px;color:var(--ink-2)}
+.cam-res{display:grid;gap:10px}
+.cam-res:empty{display:none}
+.cam-res h4{margin:4px 0 0;font:700 15px/1.2 var(--f-body)}
+.camc{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:8px;text-align:left;cursor:pointer;transition:border-color .2s,transform .15s}
+.camc:hover{border-color:var(--ink-2)}
+.camc:active{transform:scale(.99)}
+.camc .sw{aspect-ratio:16/10;border-radius:9px;pointer-events:none}
+.camc b{display:block;font:700 13.5px/1.2 var(--f-body)}
+.camc small{display:block;font-size:12px;color:var(--ink-2);line-height:1.35;margin-top:2px}
+.cam-links{display:flex;flex-wrap:wrap;gap:8px}
+@media (min-width:900px){
+  .cam{flex-direction:row}
+  .cam-panel{width:440px;max-height:none;border-radius:0;padding-top:calc(16px + env(safe-area-inset-top,0px))}
+}
+@media (max-width:420px){
+  .camb span{display:none}
+  .camb{padding:9px 11px}
+}
+
 </style>
 </head>
 <body>
@@ -524,6 +573,10 @@ kbd{display:inline-block;min-width:26px;text-align:center;font:500 12px/1 var(--
   <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4.6h-4.6"/></symbol>
   <symbol id="i-spark" viewBox="0 0 24 24"><path d="M11 3.5l1.9 5.1 5.1 1.9-5.1 1.9L11 17.5l-1.9-5.1L4 10.5l5.1-1.9z"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></symbol>
   <symbol id="i-map" viewBox="0 0 24 24"><path d="M3.5 6.5l5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2z"/><path d="M9 4.5v13M15 6.5v13"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5A2 2 0 0 1 6 6.5h2l1.5-2h5l1.5 2h2a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.6"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="9.5" r="1.6"/><path d="M20.5 15.5l-4.5-4.5-8.5 8.5"/></symbol>
+  <symbol id="i-flash" viewBox="0 0 24 24"><path d="M13 3.5L6 13h5l-1 7.5 7-9.5h-5z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></symbol>
 </svg>
 
 
@@ -541,6 +594,7 @@ kbd{display:inline-block;min-width:26px;text-align:center;font:500 12px/1 var(--
       <a href="#mappa" data-v="mappa"><svg class="ic" aria-hidden="true"><use href="#i-map"/></svg>Mappa</a>
       <a href="#info" data-v="info"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg>Info</a>
     </nav>
+    <button type="button" class="btn camb" id="cam-open" aria-label="Riconosci un colore con la fotocamera"><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg><span>Fotocamera</span></button>
     <button type="button" class="ibtn" id="theme" aria-label="Passa da tema chiaro a scuro e viceversa" title="Tema chiaro / scuro"><svg class="ic" aria-hidden="true"><use href="#i-theme"/></svg></button>
   </div>
 </header>
@@ -602,6 +656,7 @@ kbd{display:inline-block;min-width:26px;text-align:center;font:500 12px/1 var(--
               <label class="well" title="Scegli un colore qualsiasi"><span class="sr">Scegli un colore qualsiasi</span><input type="color" id="well" value="#bb7125"></label>
             </div>
             <p class="hint">Scrivi un nome (anche giapponese, es. <i>kuchiba</i>), un codice come <i>#2f6db5</i> o <i>47, 109, 181</i>, oppure tocca il quadratino: trovo i colori del dizionario più simili.</p>
+            <button type="button" class="btn" data-camopen><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg>Riconosci un colore con la fotocamera</button>
             <div class="near" id="near" hidden></div>
             <div class="fam" id="fam" role="group" aria-label="Famiglia di colori"></div>
             <div class="sortrow"><span id="pk-count"></span><label class="sr" for="sort">Ordina</label><select id="sort"><option value="book">Ordine del libro</option><option value="count">Più abbinati</option><option value="name">Nome A–Z</option><option value="light">Dal chiaro allo scuro</option></select></div>
@@ -731,6 +786,39 @@ kbd{display:inline-block;min-width:26px;text-align:center;font:500 12px/1 var(--
     </div>
   </section>
 </main>
+
+<div class="cam" id="cam" hidden role="dialog" aria-modal="true" aria-label="Riconosci un colore con la fotocamera">
+  <div class="cam-view" id="cam-view">
+    <video id="cam-video" playsinline muted autoplay></video>
+    <canvas id="cam-photo" hidden></canvas>
+    <div class="cam-ret" id="cam-ret" aria-hidden="true"><i></i></div>
+    <div class="cam-msg" id="cam-msg" hidden></div>
+    <div class="cam-top">
+      <button type="button" class="ibtn" id="cam-close" aria-label="Chiudi la fotocamera"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+      <p class="cam-hint" id="cam-hint">Inquadra il colore nel cerchio, oppure tocca un punto dell'immagine.</p>
+      <button type="button" class="ibtn" id="cam-torch" hidden aria-label="Accendi o spegni la torcia" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-flash"/></svg></button>
+    </div>
+  </div>
+  <div class="cam-panel" id="cam-panel">
+    <div class="cam-read">
+      <div class="cam-rawbox"><span class="cam-raw" id="cam-raw"></span><span class="cam-rawl" id="cam-rawl">rilevato</span></div>
+      <div class="cam-match">
+        <span class="cam-sw" id="cam-sw"></span>
+        <div class="cam-mt"><p class="eyebrow" id="cam-sim">In attesa dell'immagine…</p><h3 id="cam-name">—</h3><p id="cam-meta"></p></div>
+      </div>
+    </div>
+    <div class="cam-alt" id="cam-alt"></div>
+    <div class="cam-act">
+      <button type="button" class="btn primary" id="cam-freeze"><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg><span>Blocca il colore</span></button>
+      <button type="button" class="btn" id="cam-wb" aria-pressed="false"><span>Calibra il bianco</span></button>
+      <label class="btn" for="cam-file"><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg>Foto</label>
+      <input type="file" id="cam-file" accept="image/*" class="sr">
+      <button type="button" class="btn" id="cam-live" hidden><svg class="ic" aria-hidden="true"><use href="#i-camera"/></svg>Torna alla fotocamera</button>
+    </div>
+    <p class="cam-tip" id="cam-tip">Per un colore fedele: luce naturale, niente riflessi. Se puoi, inquadra prima un foglio bianco e tocca «Calibra il bianco».</p>
+    <div class="cam-res" id="cam-res"></div>
+  </div>
+</div>
 
 <div class="modal" id="modal" hidden>
   <div class="scrim" data-close></div>
@@ -1586,8 +1674,10 @@ function selectColor(ci, opt = {}) {
   }
 }
 function goColor(ci) {
-  if (!M.hidden) { modal.pushed = false; closeModal(); setHash('#colore.' + COL[ci].slug, 'replace'); }
-  else setHash('#colore.' + COL[ci].slug, 'push');
+  const over = !M.hidden || !CAM.hidden;
+  if (!M.hidden) { modal.pushed = false; closeModal(); }
+  if (!CAM.hidden) { cam.pushed = false; closeCam(); }
+  setHash('#colore.' + COL[ci].slug, over ? 'replace' : 'push');
   if (state.view !== 'colore') { state.scroll.colore = 0; showView('colore'); }
   selectColor(ci);
   scrollListToSel();
@@ -2017,7 +2107,8 @@ function closeModal() {
     if (finished) return; finished = true;
     M.hidden = true; modal.closing = false;
     anims.forEach(a => a.cancel());
-    setInert(false); root.classList.remove('lock');
+    const camOpen = !CAM.hidden;                    // se sotto c'è la fotocamera, resta bloccato il resto
+    setInert(camOpen); if (!camOpen) root.classList.remove('lock');
     if (modal.last && modal.last.isConnected && !modal.last.closest('[hidden]')) modal.last.focus({ preventScroll: true });
   };
   if (reduce.matches) return done();
@@ -2071,21 +2162,251 @@ function parseHash() {
   m = h.match(/^colore(?:\.([a-z0-9-]+))?$/);
   if (m) return { view: 'colore', color: m[1] && bySlug.has(m[1]) ? bySlug.get(m[1]) : null };
   if (h === 'indice') { state.mini = true; return { view: 'combinazioni' }; }
+  if (h === 'fotocamera') return { cam: true };
   if (VIEWS.includes(h)) return { view: h };
   return {};
 }
 function route() {
   dropHash();
   const r = parseHash();
+  if (r.cam) {
+    if (!state.view) showView(store.get('view', 'combinazioni'));
+    if (!M.hidden) { modal.pushed = false; closeModal(); }
+    if (CAM.hidden) openCam(false);
+    return;
+  }
   if (r.modal) {
     if (!state.view) showView(store.get('view', 'combinazioni'));
     if (M.hidden || !modal.c || modal.c.key !== r.modal) openModal(r.modal);
     return;
   }
   if (!M.hidden) { modal.pushed = false; closeModal(); }
+  if (!CAM.hidden) { cam.pushed = false; closeCam(); }
   showView(r.view || state.view || store.get('view', 'combinazioni'));
   if (r.view === 'colore' && r.color != null && r.color !== state.color) selectColor(r.color);
 }
+
+/* ================= fotocamera: riconosce il colore e propone le combinazioni ================= */
+const CAM = $('#cam'), camVideo = $('#cam-video'), camPhoto = $('#cam-photo'), camRet = $('#cam-ret'), camView = $('#cam-view');
+const cam = { stream: null, track: null, timer: 0, frozen: false, x: 0.5, y: 0.5, lin: null, gain: null, shown: -1, cand: -1, candN: 0, pick: -1, hex: null, near: null, src: 'video', pushed: false, torch: false };
+const camCanvas = document.createElement('canvas');
+const camCtx = camCanvas.getContext('2d', { willReadFrequently: true });
+const CAM_HINT = 'Inquadra il colore nel cerchio, oppure tocca un punto dell\'immagine.';
+
+function camMsg(text) {
+  const m = $('#cam-msg');
+  m.hidden = false;
+  m.innerHTML = `${esc(text)}<br><label class="btn primary" for="cam-file" style="margin-top:12px"><svg class="ic" aria-hidden="true"><use href="#i-image"/></svg>Scatta o scegli una foto</label>`;
+  camPaint();
+}
+function camStopStream() {
+  clearTimeout(cam.timer);
+  if (cam.stream) cam.stream.getTracks().forEach(t => t.stop());
+  cam.stream = null; cam.track = null; camVideo.srcObject = null;
+  cam.torch = false; $('#cam-torch').setAttribute('aria-pressed', 'false');
+}
+async function camStart() {
+  camStopStream();
+  cam.src = 'video'; cam.frozen = false;
+  camPhoto.hidden = true; camVideo.hidden = false; $('#cam-live').hidden = true; $('#cam-msg').hidden = true;
+  $('#cam-hint').textContent = CAM_HINT;
+  camPaint();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    camMsg('Qui la fotocamera dal vivo non è disponibile. Puoi scattare una foto o sceglierne una dalla galleria.');
+    return;
+  }
+  try {
+    const s = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } } });
+    if (CAM.hidden || cam.src !== 'video') { s.getTracks().forEach(t => t.stop()); return; }
+    cam.stream = s; cam.track = s.getVideoTracks()[0];
+    camVideo.srcObject = s;
+    try { await camVideo.play(); } catch (e) { /* su iPhone può partire al primo tocco */ }
+    const caps = cam.track && cam.track.getCapabilities ? cam.track.getCapabilities() : {};
+    $('#cam-torch').hidden = !caps.torch;
+    camPaint(); camLoop();
+  } catch (e) {
+    const n = e && e.name;
+    camMsg(n === 'NotAllowedError' || n === 'SecurityError'
+      ? 'Il permesso della fotocamera è stato negato. Su iPhone lo riattivi da Impostazioni › Safari › Fotocamera. Intanto puoi usare una foto.'
+      : n === 'NotFoundError' || n === 'OverconstrainedError'
+        ? 'Non trovo nessuna fotocamera su questo dispositivo. Puoi usare una foto.'
+        : 'La fotocamera non è disponibile in questo momento (forse la sta usando un\'altra app). Puoi usare una foto.');
+  }
+}
+function openCam(push) {
+  if (!CAM.hidden) return;
+  CAM.hidden = false; setInert(true); root.classList.add('lock');
+  cam.x = cam.y = 0.5; cam.lin = null; cam.shown = -1; cam.pick = -1; cam.near = null; cam.hex = null; cam.frozen = false;
+  camRet.style.left = '50%'; camRet.style.top = '50%';
+  $('#cam-res').innerHTML = '';
+  if (push) cam.pushed = setHash('#fotocamera', 'push');
+  camStart();
+  $('#cam-close').focus({ preventScroll: true });
+}
+function closeCam() {
+  if (CAM.hidden) return;
+  camStopStream();
+  CAM.hidden = true;
+  if (M.hidden) { setInert(false); root.classList.remove('lock'); }
+}
+function requestCloseCam() {
+  if (cam.pushed) {
+    cam.pushed = false; dropHash(); history.back();
+    setTimeout(() => { if (!CAM.hidden) { closeCam(); setHash(baseHash(), 'replace'); } }, 350);
+  } else { closeCam(); setHash(baseHash(), 'replace'); }
+}
+// dove cade l'immagine nella finestra (video: riempie e taglia i bordi; foto: si vede intera)
+function camBox() {
+  const isV = cam.src === 'video';
+  const sw = isV ? camVideo.videoWidth : camPhoto.width, sh = isV ? camVideo.videoHeight : camPhoto.height;
+  const vw = camView.clientWidth, vh = camView.clientHeight;
+  if (!sw || !sh || !vw || !vh) return null;
+  const scale = isV ? Math.max(vw / sw, vh / sh) : Math.min(vw / sw, vh / sh);
+  return { sw, sh, scale, ox: (vw - sw * scale) / 2, oy: (vh - sh * scale) / 2, vw, vh };
+}
+// Misura il colore nel cerchio: media in luce lineare del 60% centrale dei pixel (senza riflessi e ombre)
+function camSample() {
+  const b = camBox(); if (!b) return null;
+  const px = (cam.x * b.vw - b.ox) / b.scale, py = (cam.y * b.vh - b.oy) / b.scale;
+  if (px < 0 || py < 0 || px > b.sw || py > b.sh) return null;
+  const r = Math.max(3, Math.round(Math.min(b.sw, b.sh) * 0.02)), d = 2 * r;
+  const sx = clamp(Math.round(px - r), 0, Math.max(0, b.sw - d)), sy = clamp(Math.round(py - r), 0, Math.max(0, b.sh - d));
+  camCanvas.width = camCanvas.height = d;
+  try { camCtx.drawImage(cam.src === 'video' ? camVideo : camPhoto, sx, sy, d, d, 0, 0, d, d); } catch (e) { return null; }
+  const data = camCtx.getImageData(0, 0, d, d).data, px3 = [];
+  for (let y = 0; y < d; y++) for (let x = 0; x < d; x++) {
+    if ((x - r + 0.5) ** 2 + (y - r + 0.5) ** 2 > r * r) continue;
+    const k = (y * d + x) * 4, l = [lin(data[k]), lin(data[k + 1]), lin(data[k + 2])];
+    px3.push([0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2], l]);
+  }
+  if (!px3.length) return null;
+  px3.sort((a, b2) => a[0] - b2[0]);
+  const lo = Math.floor(px3.length * 0.2), hi = Math.max(lo + 1, Math.ceil(px3.length * 0.8));
+  const m = [0, 0, 0];
+  for (let i = lo; i < hi; i++) for (let c = 0; c < 3; c++) m[c] += px3[i][1][c];
+  return m.map(v => v / (hi - lo));
+}
+const camCorrect = l => cam.gain ? l.map((v, c) => Math.min(1, v * cam.gain[c])) : l;
+function camTick(force) {
+  const s = camSample();
+  if (!s) return false;
+  cam.lin = !cam.lin || force ? s : cam.lin.map((v, c) => v * 0.55 + s[c] * 0.45);
+  const rgb = camCorrect(cam.lin).map(v => clamp(Math.round(gam(v)), 0, 255));
+  cam.hex = rgbHex(rgb);
+  const lab = toLab(rgb);
+  const near = COL.slice(0, NW).map(c => [c.i, deltaE(lab, c.lab)]).sort((a, b) => a[1] - b[1]);
+  cam.near = near.slice(0, 4);
+  // isteresi: il colore proposto cambia solo se il nuovo resta in testa per qualche fotogramma
+  const top = near[0][0];
+  if (force || cam.shown < 0) { cam.shown = top; cam.candN = 0; }
+  else if (top !== cam.shown) {
+    if (top === cam.cand) cam.candN++; else { cam.cand = top; cam.candN = 1; }
+    const dShown = near.find(n => n[0] === cam.shown)[1];
+    if (cam.candN >= 3 || dShown - near[0][1] > 4) { cam.shown = top; cam.candN = 0; }
+  } else cam.candN = 0;
+  camPaint();
+  return true;
+}
+function camLoop() {
+  clearTimeout(cam.timer);
+  if (CAM.hidden || cam.frozen || cam.src !== 'video') return;
+  camTick(false);
+  cam.timer = setTimeout(camLoop, 140);
+}
+const camChosen = () => cam.pick >= 0 ? cam.pick : cam.shown;
+function camPaint() {
+  $('#cam-raw').style.setProperty('--c', cam.hex || 'var(--chip)');
+  $('#cam-rawl').textContent = cam.hex || 'rilevato';
+  camRet.style.setProperty('--c', cam.hex || 'transparent');
+  $('#cam-freeze span').textContent = cam.frozen ? 'Riprendi' : 'Blocca il colore';
+  $('#cam-freeze').hidden = cam.src !== 'video';
+  const ci = camChosen();
+  if (ci < 0 || !cam.hex) {
+    $('#cam-sim').textContent = cam.src === 'video' && !cam.stream ? 'Avvio della fotocamera…' : 'Tocca un punto dell\'immagine';
+    $('#cam-name').textContent = '—'; $('#cam-meta').textContent = '';
+    $('#cam-sw').style.setProperty('--c', 'var(--chip)'); $('#cam-alt').innerHTML = '';
+    return;
+  }
+  const c = COL[ci], d = deltaE(toLab(hexRgb(cam.hex)), c.lab);
+  $('#cam-sw').style.setProperty('--c', c.hex);
+  $('#cam-sim').textContent = `${cam.pick >= 0 ? 'scelto da te · ' : ''}${simLabel(d)} · differenza ${dec(d)}`;
+  $('#cam-name').textContent = c.name;
+  $('#cam-meta').textContent = `${c.jp ? c.jp + ' ' + c.ro + ' · ' : ''}${c.hex} · in ${c.combos.length} ${plural(c.combos.length, 'combinazione', 'combinazioni')}`;
+  $('#cam-alt').innerHTML = (cam.near || []).filter(n => n[0] !== ci).slice(0, 3)
+    .map(([i, dd]) => `<button type="button" class="pchip" data-campick="${i}" title="Usa questo colore"><i style="--c:${COL[i].hex}"></i><span>${esc(COL[i].name)}</span><b>${dec(dd)}</b></button>`).join('');
+}
+function camResults() {
+  const ci = camChosen();
+  if (ci < 0) { $('#cam-res').innerHTML = ''; return; }
+  const c = COL[ci], L = c.combos.map(i => CMB[i]).sort((a, b) => b.ch - a.ch);
+  $('#cam-res').innerHTML = `<h4>${L.length} ${plural(L.length, 'combinazione', 'combinazioni')} di Wada con ${esc(c.name)}</h4>`
+    + L.slice(0, 8).map(x => `<button type="button" class="camc" data-open="${x.key}"><span class="sw">${swatchSpans(x, ci)}</span><span><b>${x.set === 'w1' ? 'Vol. I' : 'Vol. II'} · n. ${x.num}</b><small>${esc(x.cols.map(displayName).join(' · '))}</small><small>Armonia ${x.hi} · ${harmonyLabel(x.ch)}</small></span></button>`).join('')
+    + `<div class="cam-links"><button type="button" class="btn" data-color="${ci}">${L.length > 8 ? `Tutte le ${L.length} combinazioni` : 'Apri in «Per colore»'}</button>`
+    + `<button type="button" class="btn" data-camgen>Genera dal colore misurato</button>`
+    + `<button type="button" class="btn" data-copytext="${c.hex}" data-sw="${c.hex}">Copia ${c.hex}</button></div>`;
+}
+function camFreeze(on) {
+  cam.frozen = on;
+  if (on) { clearTimeout(cam.timer); try { camVideo.pause(); } catch (e) { /* niente */ } camResults(); }
+  else { cam.pick = -1; $('#cam-res').innerHTML = ''; camVideo.play().catch(() => {}); camLoop(); }
+  camPaint();
+}
+function camWhite() {
+  if (cam.gain) { cam.gain = null; toast('Calibrazione del bianco tolta'); }
+  else {
+    if (!cam.lin) { toast('Inquadra prima un foglio bianco o grigio nel cerchio'); return; }
+    const [r, g, b] = cam.lin, Y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    if (Y < 0.03) { toast('C\'è troppo poca luce per calibrare il bianco'); return; }
+    cam.gain = [Y / Math.max(r, 1e-4), Y / Math.max(g, 1e-4), Y / Math.max(b, 1e-4)].map(v => clamp(v, 0.4, 2.5));
+    toast('Bianco calibrato: i colori sono corretti per questa luce');
+  }
+  $('#cam-wb').setAttribute('aria-pressed', String(!!cam.gain));
+  $('#cam-wb span').textContent = cam.gain ? 'Bianco calibrato ✓' : 'Calibra il bianco';
+  camTick(true);
+  if (cam.frozen || cam.src === 'photo') camResults();
+}
+function camLoadImg(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { URL.revokeObjectURL(url); res(im); };
+    im.onerror = e => { URL.revokeObjectURL(url); rej(e); };
+    im.src = url;
+  });
+}
+async function camLoadPhoto(file) {
+  if (!file) return;
+  try {
+    const img = window.createImageBitmap ? await createImageBitmap(file).catch(() => camLoadImg(file)) : await camLoadImg(file);
+    const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    const k = Math.min(1, 1600 / Math.max(w, h));
+    camPhoto.width = Math.max(1, Math.round(w * k)); camPhoto.height = Math.max(1, Math.round(h * k));
+    camPhoto.getContext('2d').drawImage(img, 0, 0, camPhoto.width, camPhoto.height);
+    camStopStream();
+    cam.src = 'photo'; cam.frozen = true;
+    camVideo.hidden = true; camPhoto.hidden = false; $('#cam-msg').hidden = true; $('#cam-live').hidden = false;
+    cam.x = cam.y = 0.5; camRet.style.left = '50%'; camRet.style.top = '50%';
+    cam.pick = -1; cam.shown = -1; cam.lin = null;
+    $('#cam-hint').textContent = 'Tocca un punto della foto per misurarne il colore.';
+    camTick(true); camResults(); camPaint();
+  } catch (e) { toast('Non riesco ad aprire questa immagine'); }
+}
+camView.addEventListener('pointerdown', e => {
+  if (e.target.closest('.cam-top, .cam-msg')) return;
+  const r = camView.getBoundingClientRect();
+  cam.x = clamp((e.clientX - r.left) / r.width, 0.02, 0.98);
+  cam.y = clamp((e.clientY - r.top) / r.height, 0.02, 0.98);
+  camRet.style.left = cam.x * 100 + '%'; camRet.style.top = cam.y * 100 + '%';
+  cam.lin = null; cam.pick = -1;
+  if (cam.src === 'video' && camVideo.paused && !cam.frozen) camVideo.play().catch(() => {});
+  camTick(true);
+  if (cam.frozen || cam.src === 'photo') camResults();
+});
+$('#cam-file').addEventListener('change', e => { camLoadPhoto(e.target.files && e.target.files[0]); e.target.value = ''; });
+document.addEventListener('visibilitychange', () => {
+  if (CAM.hidden || cam.src !== 'video') return;
+  if (document.hidden) camStopStream();          // spegne la fotocamera quando cambi app
+  else if (!cam.stream) camStart();
+});
 
 /* ================= eventi ================= */
 document.addEventListener('click', e => {
@@ -2100,7 +2421,8 @@ document.addEventListener('click', e => {
     if (!key) return;
     const src = t.matches('.tile') ? $('.tsw', t) : t.id === 'h-open' ? $('#h-sw') : t.matches('.sw, .hero-sw') ? t : null;
     let list;
-    if (t.closest('#v-colore')) list = (t.closest('#others') ? $$('#others [data-open].sw') : $$('#pgrid .sw')).map(b => b.dataset.open);
+    if (t.closest('#cam')) list = $$('#cam-res [data-open]').map(b => b.dataset.open);
+    else if (t.closest('#v-colore')) list = (t.closest('#others') ? $$('#others [data-open].sw') : $$('#pgrid .sw')).map(b => b.dataset.open);
     else if (t.closest('#v-genera')) list = $$('#g-res .sw').map(b => b.dataset.open);
     else if (t.closest('.hero')) list = WCOMBOS.map(c => c.key);
     else if (t.closest('#v-combinazioni')) list = currentList().map(c => c.key);
@@ -2109,6 +2431,14 @@ document.addEventListener('click', e => {
     return openModal(key, { from: src, list, push: getCombo(key).set !== 'gen' });
   }
   if (t.matches('[data-color]')) return goColor(+t.dataset.color);
+  if (t.matches('[data-camopen]')) return openCam(true);
+  if (t.matches('[data-campick]')) { cam.pick = +t.dataset.campick; if (!cam.frozen && cam.src === 'video') camFreeze(true); else { camPaint(); camResults(); } return; }
+  if (t.matches('[data-camgen]')) {
+    const hex = cam.hex;
+    cam.pushed = false; closeCam(); setHash('#genera', 'replace');
+    showView('genera'); if (hex) setGen(hex);
+    return;
+  }
   if (t.matches('[data-pick]')) { selectColor(+t.dataset.pick, { history: 'replace', reveal: true, fromList: true }); return; }
   if (t.matches('[data-partner]')) {
     const x = +t.dataset.partner;
@@ -2168,6 +2498,17 @@ document.addEventListener('click', e => {
       return;
     }
     case 'g-snap': state.snap = !state.snap; renderGen(); return;
+    case 'cam-open': openCam(true); return;
+    case 'cam-close': requestCloseCam(); return;
+    case 'cam-freeze': camFreeze(!cam.frozen); return;
+    case 'cam-wb': camWhite(); return;
+    case 'cam-live': camStart(); return;
+    case 'cam-torch': {
+      cam.torch = !cam.torch;
+      t.setAttribute('aria-pressed', String(cam.torch));
+      if (cam.track) cam.track.applyConstraints({ advanced: [{ torch: cam.torch }] }).catch(() => { cam.torch = false; t.setAttribute('aria-pressed', 'false'); toast('La torcia non è disponibile'); });
+      return;
+    }
     case 'g-rand': setGen(COL[Math.floor(Math.random() * NW)].hex); return;
   }
 });
@@ -2231,6 +2572,7 @@ document.addEventListener('keydown', e => {
     else if (!typing && e.key === 'ArrowRight') { e.preventDefault(); step(1); }
     return;
   }
+  if (!CAM.hidden) { if (e.key === 'Escape') { e.preventDefault(); requestCloseCam(); } return; }
   if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.key === '/') {
     e.preventDefault();
@@ -2254,7 +2596,7 @@ paintSegs(); syncTop(); route();
 requestAnimationFrame(() => { movePill(); requestAnimationFrame(() => $('#pill').classList.add('ready')); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { movePill(); syncTop(); });
 // Per i test automatici
-window.__wada = { COL, CMB, BYKEY, TEMP, NW, state, fmt, deltaE, parseColor, selectColor, openModal, closeModal, step, currentList, pList, genPalettes, renderGen, setGen, renderMap, harmony, names, nearestWada };
+window.__wada = { cam, openCam, closeCam, camTick, camFreeze, camWhite, camLoadPhoto, COL, CMB, BYKEY, TEMP, NW, state, fmt, deltaE, parseColor, selectColor, openModal, closeModal, step, currentList, pList, genPalettes, renderGen, setGen, renderMap, harmony, names, nearestWada };
 })();
 </script>
 <script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(function () {});</script>
